@@ -10,7 +10,7 @@ public class Discount {
         this.eventName = eventName;
         this.discountPercentage = discountPercentage;
     }
-///
+
     public String getDiscountId() {
         return discountId;
     }
@@ -41,5 +41,5 @@ public class Discount {
         System.out.println("Event Name: " + eventName);
         System.out.println("Discount Percentage: " + discountPercentage + "%");
     }
-//
+
 }

@@ -3,8 +3,8 @@ package model;
 public class Review {
     private String eventId;
     private String userId;
-    private int rating; // Evaluarea evenimentului (de exemplu, pe o scară de la 1 la 5)
-    private String comment; // Comentariul utilizatorului
+    private int rating;
+    private String comment;
 
     public Review(String eventId, String userId, int rating, String comment) {
         this.eventId = eventId;
