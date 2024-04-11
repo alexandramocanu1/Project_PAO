@@ -17,4 +17,3 @@ public class InvalidDataException extends Exception {
         super("Invalid data provided.", cause);
     }
 }
-//////
