@@ -3,13 +3,15 @@ package model;
 import java.util.List;
 import java.util.ArrayList;
 
-
-//import type_event.TypeEvent;
-//import dicount.Discount;
+//import Type_event.TypeEvent;
+//import Dicount.Discount;
 
 public class User {
     private String name;
     private String email;
+
+    public User() {
+    }
 
     public User(String name, String email) {
         this.name = name;
@@ -41,11 +43,7 @@ public class User {
             System.out.println("No " + eventType + " events available.");
         } else {
             for (Event event : filteredEvents) {
-                System.out.println("Event ID: " + event.getEventId());
-                System.out.println("Event Name: " + event.getName());
-                System.out.println("Date: " + event.getDate());
-                System.out.println("Location: " + event.getLocation());
-                System.out.println("-------------------------------------");
+                event.displayEventInfo();
             }
         }
     }
@@ -78,5 +76,4 @@ public class User {
 
         System.out.println("Ticket canceled successfully!");
     }
-
 }
