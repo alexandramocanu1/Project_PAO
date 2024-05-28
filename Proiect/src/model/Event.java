@@ -7,6 +7,16 @@ public class Event {
     private String location;
     private int availableTickets;
 
+    /**
+     * Constructor pentru clasa Event.
+     *
+     * @param eventId ID-ul evenimentului
+     * @param name Numele evenimentului
+     * @param date Data evenimentului
+     * @param location Locația evenimentului
+     * @param availableTickets Numărul de bilete disponibile
+     */
+
     public Event(String eventId, String name, String date, String location, int availableTickets) {
         this.eventId = eventId;
         this.name = name;
