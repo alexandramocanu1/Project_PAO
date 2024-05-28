@@ -1,17 +1,27 @@
 package view;
 
-import exceptions.InvalidDataException;
-import model.*;
+import model.Event;
+import model.User;
+import model.Ticket;
+import persistence.*;
+import service.AuditService;
+import service.DatabaseService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-//import java.model.User;
 
 public class ConsoleApp {
 
     private Scanner scanner = new Scanner(System.in);
-    private List<Event> events = new ArrayList<>();
+    private EventRepository eventRepository = new EventRepository();
+    private DiscountRepository discountRepository = new DiscountRepository();
+    private ReservationRepository reservationRepository = new ReservationRepository();
+    private ReviewRepository reviewRepository = new ReviewRepository();
+    private TicketRepository ticketRepository = new TicketRepository();
+    private TypeEventRepository typeEventRepository = new TypeEventRepository();
+    private UserRepository userRepository = new UserRepository();
+    private VenueRepository venueRepository = new VenueRepository();
+    private DatabaseService databaseService = new DatabaseService();
     private User currentUser;
 
     public static void main(String[] args) {
@@ -43,7 +53,7 @@ public class ConsoleApp {
                 }
             } else {
                 showMenu();
-                int option = readOption(5);
+                int option = readOption(12);
                 executeOption(option);
             }
         }
@@ -72,8 +82,15 @@ public class ConsoleApp {
         System.out.println("1. View available events");
         System.out.println("2. Buy ticket");
         System.out.println("3. Cancel ticket");
-        System.out.println("4. Logout");
-        System.out.println("5. Exit");
+        System.out.println("4. View users");
+        System.out.println("5. View venues");
+        System.out.println("6. View events");
+        System.out.println("7. View tickets");
+        System.out.println("8. View reviews");
+        System.out.println("9. View reservations");
+        System.out.println("10. View discounts");
+        System.out.println("11. Logout");
+        System.out.println("12. Exit");
     }
 
     private int readOption(int maxOption) {
@@ -101,10 +118,31 @@ public class ConsoleApp {
                 cancelTicket();
                 break;
             case 4:
+                databaseService.displayUsers(userRepository);
+                break;
+            case 5:
+                databaseService.displayVenues(venueRepository);
+                break;
+            case 6:
+                databaseService.displayEvents(eventRepository);
+                break;
+            case 7:
+                databaseService.displayTickets(ticketRepository);
+                break;
+            case 8:
+                databaseService.displayReviews(reviewRepository);
+                break;
+            case 9:
+                databaseService.displayReservations(reservationRepository);
+                break;
+            case 10:
+                databaseService.displayDiscounts(discountRepository);
+                break;
+            case 11:
                 currentUser = null;
                 System.out.println("Logged out successfully!");
                 break;
-            case 5:
+            case 12:
                 System.out.println("Exiting the application. Goodbye!");
                 System.exit(0);
         }
@@ -112,6 +150,7 @@ public class ConsoleApp {
 
     private void viewAvailableEvents() {
         System.out.println("Viewing available events...");
+        List<Event> events = eventRepository.getAllEvents();
         if (events.isEmpty()) {
             System.out.println("No events available.");
         } else {
@@ -122,10 +161,34 @@ public class ConsoleApp {
     }
 
     private void buyTicket() {
-        System.out.println("Buying ticket...");
+        System.out.print("Enter event ID: ");
+        String eventId = scanner.nextLine();
+        Event event = eventRepository.findEventById(eventId);
+        if (event != null) {
+            if (event.getAvailableTickets() > 0) {
+                eventRepository.buyTicket(currentUser, event);
+                Ticket ticket = new Ticket(event.getEventId(), event.getName(), "TICKET_" + System.currentTimeMillis(), currentUser.getUserId());
+                ticketRepository.addTicket(ticket);
+                ticket.displayTicketInfo();
+                AuditService.logAction("buyTicket");
+            } else {
+                System.out.println("Sorry, no tickets available for this event.");
+            }
+        } else {
+            System.out.println("Event not found!");
+        }
     }
 
     private void cancelTicket() {
-        System.out.println("Canceling ticket...");
+        System.out.print("Enter event ID: ");
+        String eventId = scanner.nextLine();
+        Event event = eventRepository.findEventById(eventId);
+        if (event != null) {
+            eventRepository.cancelTicket(currentUser, event);
+            AuditService.logAction("cancelTicket");
+            System.out.println("Ticket canceled successfully!");
+        } else {
+            System.out.println("Event not found!");
+        }
     }
 }

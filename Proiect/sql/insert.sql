@@ -1,5 +1,7 @@
 -- Insert users
 INSERT INTO Users (username, password, email, full_name) VALUES
+    ('alexandra', 'parola', 'alexandramocanu181@yahoo.com', 'Alexandra Mocanu');
+INSERT INTO Users (username, password, email, full_name) VALUES
     ('johndoe', 'password123', 'john@example.com', 'John Doe');
 INSERT INTO Users (username, password, email, full_name) VALUES
     ('janedoe', 'password456', 'jane@example.com', 'Jane Doe');

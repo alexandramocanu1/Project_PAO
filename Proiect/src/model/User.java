@@ -1,14 +1,13 @@
 package model;
 
+import service.AuditService;
 import java.util.List;
 import java.util.ArrayList;
-
-//import Type_event.TypeEvent;
-//import Dicount.Discount;
 
 public class User {
     private String name;
     private String email;
+    private String userId;
 
     public User() {
     }
@@ -16,6 +15,7 @@ public class User {
     public User(String name, String email) {
         this.name = name;
         this.email = email;
+        this.userId = "USER_" + System.currentTimeMillis();
     }
 
     public String getName() {
@@ -26,6 +26,10 @@ public class User {
         return email;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -34,11 +38,13 @@ public class User {
         this.email = email;
     }
 
+    public void displayUserInfo() {
+        System.out.println("User ID: " + userId + ", Name: " + name + ", Email: " + email);
+    }
+
     public void viewEventsByType(List<Event> events, String eventType) {
         System.out.println("Viewing available events for " + eventType + "...");
-
         List<Event> filteredEvents = filterEventsByType(events, eventType);
-
         if (filteredEvents.isEmpty()) {
             System.out.println("No " + eventType + " events available.");
         } else {
@@ -46,6 +52,7 @@ public class User {
                 event.displayEventInfo();
             }
         }
+        AuditService.logAction("viewEventsByType");
     }
 
     private List<Event> filterEventsByType(List<Event> events, String eventType) {
@@ -60,10 +67,10 @@ public class User {
 
     public void buyTicket(Event event) {
         System.out.println("Buying ticket for event: " + event.getName());
-
         if (event.getAvailableTickets() > 0) {
             event.setAvailableTickets(event.getAvailableTickets() - 1);
             System.out.println("Ticket purchased successfully!");
+            AuditService.logAction("buyTicket");
         } else {
             System.out.println("Sorry, no tickets available for this event.");
         }
@@ -71,9 +78,8 @@ public class User {
 
     public void cancelTicket(Event event) {
         System.out.println("Canceling ticket for event: " + event.getName());
-
         event.setAvailableTickets(event.getAvailableTickets() + 1);
-
         System.out.println("Ticket canceled successfully!");
+        AuditService.logAction("cancelTicket");
     }
 }

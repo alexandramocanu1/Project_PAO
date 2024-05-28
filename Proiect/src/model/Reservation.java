@@ -1,5 +1,6 @@
 package model;
 
+import service.AuditService;
 import java.util.Date;
 
 public class Reservation {
@@ -15,6 +16,7 @@ public class Reservation {
         this.eventId = eventId;
         this.numberOfTickets = numberOfTickets;
         this.reservationDate = reservationDate;
+        AuditService.logAction("ReservationCreated");
     }
 
     public String getReservationId() {
@@ -39,22 +41,27 @@ public class Reservation {
 
     public void setReservationId(String reservationId) {
         this.reservationId = reservationId;
+        AuditService.logAction("setReservationId");
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
+        AuditService.logAction("setUserId");
     }
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
+        AuditService.logAction("setEventId");
     }
 
     public void setNumberOfTickets(int numberOfTickets) {
         this.numberOfTickets = numberOfTickets;
+        AuditService.logAction("setNumberOfTickets");
     }
 
     public void setReservationDate(Date reservationDate) {
         this.reservationDate = reservationDate;
+        AuditService.logAction("setReservationDate");
     }
 
     public void displayReservationInfo() {
@@ -64,6 +71,6 @@ public class Reservation {
         System.out.println("Event ID: " + eventId);
         System.out.println("Number of Tickets: " + numberOfTickets);
         System.out.println("Reservation Date: " + reservationDate);
+        AuditService.logAction("displayReservationInfo");
     }
-
 }

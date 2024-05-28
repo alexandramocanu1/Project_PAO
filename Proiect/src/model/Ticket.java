@@ -1,5 +1,7 @@
 package model;
 
+import service.AuditService;
+
 public class Ticket {
     private String eventId;
     private String eventName;
@@ -11,6 +13,7 @@ public class Ticket {
         this.eventName = eventName;
         this.ticketId = ticketId;
         this.userId = userId;
+        AuditService.logAction("TicketCreated");
     }
 
     public String getEventId() {
@@ -52,5 +55,4 @@ public class Ticket {
         System.out.println("Ticket ID: " + ticketId);
         System.out.println("User ID: " + userId);
     }
-
 }
