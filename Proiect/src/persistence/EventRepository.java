@@ -1,59 +1,72 @@
 package persistence;
 
 import model.Event;
-import model.User;
-import model.Ticket;
+import service.DatabaseConfig;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventRepository {
 
-    private List<Event> events = new ArrayList<>();
-
     public List<Event> getAllEvents() {
-        return new ArrayList<>(events);
+        List<Event> events = new ArrayList<>();
+        String query = "SELECT * FROM events";
+
+        try (Connection connection = DatabaseConfig.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String eventId = resultSet.getString("event_id");
+                String name = resultSet.getString("name");
+                String date = resultSet.getString("date");
+                String location = resultSet.getString("location");
+                int availableTickets = resultSet.getInt("available_tickets");
+                events.add(new Event(eventId, name, date, location, availableTickets));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return events;
     }
 
     public Event findEventById(String eventId) {
-        for (Event event : events) {
-            if (event.getEventId().equals(eventId)) {
-                return event;
+        Event event = null;
+        String query = "SELECT * FROM events WHERE event_id = ?";
+
+        try (Connection connection = DatabaseConfig.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, eventId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String date = resultSet.getString("date");
+                String location = resultSet.getString("location");
+                int availableTickets = resultSet.getInt("available_tickets");
+                event = new Event(eventId, name, date, location, availableTickets);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return null;
+        return event;
     }
 
     public void updateEvent(Event event) {
-        // This is a simple in-memory implementation. In a real-world application, you would update the event in the database.
-        for (int i = 0; i < events.size(); i++) {
-            if (events.get(i).getEventId().equals(event.getEventId())) {
-                events.set(i, event);
-                break;
-            }
+        String query = "UPDATE events SET available_tickets = ? WHERE event_id = ?";
+
+        try (Connection connection = DatabaseConfig.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, event.getAvailableTickets());
+            statement.setString(2, event.getEventId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
-
-    public void buyTicket(User user, Event event) {
-        // Check if there are available tickets
-        if (event.getAvailableTickets() > 0) {
-            // Update available tickets
-            event.setAvailableTickets(event.getAvailableTickets() - 1);
-            // Create and save ticket
-            Ticket ticket = new Ticket(event.getEventId(), event.getName(), "TICKET_" + System.currentTimeMillis(), user.getUserId());
-            // Log action
-            System.out.println("Ticket bought successfully!");
-        } else {
-            System.out.println("Sorry, no tickets available for this event.");
-        }
-    }
-
-    public void cancelTicket(User user, Event event) {
-        // Implement ticket cancellation logic
-        // For example, you might need to find the ticket associated with the user and event
-        // and update its status to cancelled
-        // Then update the available tickets for the event
-        System.out.println("Ticket canceled successfully!");
-    }
-
 }

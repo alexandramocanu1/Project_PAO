@@ -3,7 +3,7 @@ package view;
 import model.Event;
 import model.User;
 import model.Ticket;
-import persistence.*;
+import persistence.EventRepository;
 import service.AuditService;
 import service.DatabaseService;
 
@@ -14,13 +14,6 @@ public class ConsoleApp {
 
     private Scanner scanner = new Scanner(System.in);
     private EventRepository eventRepository = new EventRepository();
-    private DiscountRepository discountRepository = new DiscountRepository();
-    private ReservationRepository reservationRepository = new ReservationRepository();
-    private ReviewRepository reviewRepository = new ReviewRepository();
-    private TicketRepository ticketRepository = new TicketRepository();
-    private TypeEventRepository typeEventRepository = new TypeEventRepository();
-    private UserRepository userRepository = new UserRepository();
-    private VenueRepository venueRepository = new VenueRepository();
     private DatabaseService databaseService = new DatabaseService();
     private User currentUser;
 
@@ -118,25 +111,25 @@ public class ConsoleApp {
                 cancelTicket();
                 break;
             case 4:
-                databaseService.displayUsers(userRepository);
+                databaseService.displayUsers();
                 break;
             case 5:
-                databaseService.displayVenues(venueRepository);
+                databaseService.displayVenues();
                 break;
             case 6:
-                databaseService.displayEvents(eventRepository);
+                databaseService.displayEvents();
                 break;
             case 7:
-                databaseService.displayTickets(ticketRepository);
+                databaseService.displayTickets();
                 break;
             case 8:
-                databaseService.displayReviews(reviewRepository);
+                databaseService.displayReviews();
                 break;
             case 9:
-                databaseService.displayReservations(reservationRepository);
+                databaseService.displayReservations();
                 break;
             case 10:
-                databaseService.displayDiscounts(discountRepository);
+                databaseService.displayDiscounts();
                 break;
             case 11:
                 currentUser = null;
@@ -160,15 +153,28 @@ public class ConsoleApp {
         }
     }
 
+    public void showAllEvents() {
+        System.out.println("All Events:");
+        for (Event event : eventRepository.getAllEvents()) {
+            System.out.println("Event ID: " + event.getEventId());
+            System.out.println("Name: " + event.getName());
+            System.out.println("Date: " + event.getDate());
+            System.out.println("Location: " + event.getLocation());
+            System.out.println("Available Tickets: " + event.getAvailableTickets());
+            System.out.println();
+        }
+    }
+
     private void buyTicket() {
         System.out.print("Enter event ID: ");
         String eventId = scanner.nextLine();
         Event event = eventRepository.findEventById(eventId);
         if (event != null) {
             if (event.getAvailableTickets() > 0) {
-                eventRepository.buyTicket(currentUser, event);
+                // Decrement available tickets
+                event.setAvailableTickets(event.getAvailableTickets() - 1);
+                eventRepository.updateEvent(event);
                 Ticket ticket = new Ticket(event.getEventId(), event.getName(), "TICKET_" + System.currentTimeMillis(), currentUser.getUserId());
-                ticketRepository.addTicket(ticket);
                 ticket.displayTicketInfo();
                 AuditService.logAction("buyTicket");
             } else {
@@ -184,7 +190,9 @@ public class ConsoleApp {
         String eventId = scanner.nextLine();
         Event event = eventRepository.findEventById(eventId);
         if (event != null) {
-            eventRepository.cancelTicket(currentUser, event);
+            // Increment available tickets
+            event.setAvailableTickets(event.getAvailableTickets() + 1);
+            eventRepository.updateEvent(event);
             AuditService.logAction("cancelTicket");
             System.out.println("Ticket canceled successfully!");
         } else {

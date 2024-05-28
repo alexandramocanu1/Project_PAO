@@ -1,47 +1,34 @@
 package persistence;
 
 import model.User;
+import service.DatabaseConfig;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository {
-    private List<User> users = new ArrayList<>();
-
-    public void addUser(User user) {
-        users.add(user);
-    }
 
     public List<User> getAllUsers() {
-        return new ArrayList<>(users);
-    }
+        List<User> users = new ArrayList<>();
+        String query = "SELECT * FROM users";
 
-    public User findUserById(String userId) {
-        return users.stream()
-                .filter(user -> user.getUserId().equals(userId))
-                .findFirst()
-                .orElse(null);
-    }
+        try (Connection connection = DatabaseConfig.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
 
-    public void updateUser(User user) {
-        int index = findIndexById(user.getUserId());
-        if (index >= 0) {
-            users.set(index, user);
-        }
-    }
-
-    public void deleteUser(String userId) {
-        int index = findIndexById(userId);
-        if (index >= 0) {
-            users.remove(index);
-        }
-    }
-
-    private int findIndexById(String userId) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getUserId().equals(userId)) {
-                return i;
+            while (resultSet.next()) {
+                String userId = resultSet.getString("user_id");
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                users.add(new User(userId, name, email));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return -1;
+        return users;
     }
 }

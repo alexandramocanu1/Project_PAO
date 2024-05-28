@@ -9,15 +9,25 @@ public class User {
     private String email;
     private String userId;
 
+    // Constructor existent
     public User() {
     }
 
+    // Constructor existent
     public User(String name, String email) {
         this.name = name;
         this.email = email;
         this.userId = "USER_" + System.currentTimeMillis();
     }
 
+    // Constructor nou
+    public User(String userId, String name, String email) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+    }
+
+    // Metode getter și setter
     public String getName() {
         return name;
     }

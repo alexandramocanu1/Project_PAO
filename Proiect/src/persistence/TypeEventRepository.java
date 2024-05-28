@@ -1,47 +1,33 @@
 package persistence;
 
 import model.TypeEvent;
+import service.DatabaseConfig;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TypeEventRepository {
-    private List<TypeEvent> typeEvents = new ArrayList<>();
-
-    public void addTypeEvent(TypeEvent typeEvent) {
-        typeEvents.add(typeEvent);
-    }
 
     public List<TypeEvent> getAllTypeEvents() {
-        return new ArrayList<>(typeEvents);
-    }
+        List<TypeEvent> typeEvents = new ArrayList<>();
+        String query = "SELECT * FROM type_events";
 
-    public TypeEvent findTypeEventById(String typeId) {
-        return typeEvents.stream()
-                .filter(typeEvent -> typeEvent.getTypeId().equals(typeId))
-                .findFirst()
-                .orElse(null);
-    }
+        try (Connection connection = DatabaseConfig.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
 
-    public void updateTypeEvent(TypeEvent typeEvent) {
-        int index = findIndexById(typeEvent.getTypeId());
-        if (index >= 0) {
-            typeEvents.set(index, typeEvent);
-        }
-    }
-
-    public void deleteTypeEvent(String typeId) {
-        int index = findIndexById(typeId);
-        if (index >= 0) {
-            typeEvents.remove(index);
-        }
-    }
-
-    private int findIndexById(String typeId) {
-        for (int i = 0; i < typeEvents.size(); i++) {
-            if (typeEvents.get(i).getTypeId().equals(typeId)) {
-                return i;
+            while (resultSet.next()) {
+                String typeId = resultSet.getString("type_id");
+                String typeName = resultSet.getString("type_name");
+                typeEvents.add(new TypeEvent(typeId, typeName));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return -1;
+        return typeEvents;
     }
 }

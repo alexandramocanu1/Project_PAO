@@ -1,47 +1,35 @@
 package persistence;
 
 import model.Ticket;
+import service.DatabaseConfig;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TicketRepository {
-    private List<Ticket> tickets = new ArrayList<>();
-
-    public void addTicket(Ticket ticket) {
-        tickets.add(ticket);
-    }
 
     public List<Ticket> getAllTickets() {
-        return new ArrayList<>(tickets);
-    }
+        List<Ticket> tickets = new ArrayList<>();
+        String query = "SELECT * FROM tickets";
 
-    public Ticket findTicketById(String ticketId) {
-        return tickets.stream()
-                .filter(ticket -> ticket.getTicketId().equals(ticketId))
-                .findFirst()
-                .orElse(null);
-    }
+        try (Connection connection = DatabaseConfig.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
 
-    public void updateTicket(Ticket ticket) {
-        int index = findIndexById(ticket.getTicketId());
-        if (index >= 0) {
-            tickets.set(index, ticket);
-        }
-    }
-
-    public void deleteTicket(String ticketId) {
-        int index = findIndexById(ticketId);
-        if (index >= 0) {
-            tickets.remove(index);
-        }
-    }
-
-    private int findIndexById(String ticketId) {
-        for (int i = 0; i < tickets.size(); i++) {
-            if (tickets.get(i).getTicketId().equals(ticketId)) {
-                return i;
+            while (resultSet.next()) {
+                String eventId = resultSet.getString("event_id");
+                String eventName = resultSet.getString("event_name");
+                String ticketId = resultSet.getString("ticket_id");
+                String userId = resultSet.getString("user_id");
+                tickets.add(new Ticket(eventId, eventName, ticketId, userId));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return -1;
+        return tickets;
     }
 }

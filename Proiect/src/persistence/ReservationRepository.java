@@ -1,47 +1,37 @@
 package persistence;
 
 import model.Reservation;
+import service.DatabaseConfig;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ReservationRepository {
-    private List<Reservation> reservations = new ArrayList<>();
-
-    public void addReservation(Reservation reservation) {
-        reservations.add(reservation);
-    }
 
     public List<Reservation> getAllReservations() {
-        return new ArrayList<>(reservations);
-    }
+        List<Reservation> reservations = new ArrayList<>();
+        String query = "SELECT * FROM reservations";
 
-    public Reservation findReservationById(String reservationId) {
-        return reservations.stream()
-                .filter(reservation -> reservation.getReservationId().equals(reservationId))
-                .findFirst()
-                .orElse(null);
-    }
+        try (Connection connection = DatabaseConfig.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
 
-    public void updateReservation(Reservation reservation) {
-        int index = findIndexById(reservation.getReservationId());
-        if (index >= 0) {
-            reservations.set(index, reservation);
-        }
-    }
-
-    public void deleteReservation(String reservationId) {
-        int index = findIndexById(reservationId);
-        if (index >= 0) {
-            reservations.remove(index);
-        }
-    }
-
-    private int findIndexById(String reservationId) {
-        for (int i = 0; i < reservations.size(); i++) {
-            if (reservations.get(i).getReservationId().equals(reservationId)) {
-                return i;
+            while (resultSet.next()) {
+                String reservationId = resultSet.getString("reservation_id");
+                String userId = resultSet.getString("user_id");
+                String eventId = resultSet.getString("event_id");
+                int numberOfTickets = resultSet.getInt("number_of_tickets");
+                Date reservationDate = resultSet.getDate("reservation_date");
+                reservations.add(new Reservation(reservationId, userId, eventId, numberOfTickets, reservationDate));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return -1;
+        return reservations;
     }
 }

@@ -1,47 +1,34 @@
 package persistence;
 
 import model.Venue;
+import service.DatabaseConfig;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class VenueRepository {
-    private List<Venue> venues = new ArrayList<>();
-
-    public void addVenue(Venue venue) {
-        venues.add(venue);
-    }
 
     public List<Venue> getAllVenues() {
-        return new ArrayList<>(venues);
-    }
+        List<Venue> venues = new ArrayList<>();
+        String query = "SELECT * FROM venues";
 
-    public Venue findVenueById(String venueId) {
-        return venues.stream()
-                .filter(venue -> venue.getVenueId().equals(venueId))
-                .findFirst()
-                .orElse(null);
-    }
+        try (Connection connection = DatabaseConfig.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
 
-    public void updateVenue(Venue venue) {
-        int index = findIndexById(venue.getVenueId());
-        if (index >= 0) {
-            venues.set(index, venue);
-        }
-    }
-
-    public void deleteVenue(String venueId) {
-        int index = findIndexById(venueId);
-        if (index >= 0) {
-            venues.remove(index);
-        }
-    }
-
-    private int findIndexById(String venueId) {
-        for (int i = 0; i < venues.size(); i++) {
-            if (venues.get(i).getVenueId().equals(venueId)) {
-                return i;
+            while (resultSet.next()) {
+                String venueId = resultSet.getString("venue_id");
+                String name = resultSet.getString("name");
+                String location = resultSet.getString("location");
+                venues.add(new Venue(venueId, name, location));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return -1;
+        return venues;
     }
 }
