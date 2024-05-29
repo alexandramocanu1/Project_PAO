@@ -14,7 +14,7 @@ public class ReviewRepository {
 
     public List<Review> getAllReviews() {
         List<Review> reviews = new ArrayList<>();
-        String query = "SELECT * FROM reviews";
+        String query = "SELECT * FROM Reviews";
 
         try (Connection connection = DatabaseConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(query);

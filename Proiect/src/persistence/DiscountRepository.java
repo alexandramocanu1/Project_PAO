@@ -14,7 +14,7 @@ public class DiscountRepository {
 
     public List<Discount> getAllDiscounts() {
         List<Discount> discounts = new ArrayList<>();
-        String query = "SELECT * FROM discounts";
+        String query = "SELECT * FROM Discounts";
 
         try (Connection connection = DatabaseConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(query);

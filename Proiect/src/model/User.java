@@ -1,5 +1,7 @@
 package model;
 
+import service.AuditService;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,14 +12,17 @@ public class User {
     private String password;
     private String fullName;
     private List<Event> tickets;
+    private String role;
 
-    public User(int userId, String username, String email, String password, String fullName) {
+    public User(int userId, String username, String email, String password, String fullName, String role) {
         this.userId = userId;
         this.username = username;
         this.email = email;
         this.password = password;
         this.fullName = fullName;
+        this.role = role;
         this.tickets = new ArrayList<>();
+        AuditService.logAction("UserCreated");
     }
 
     // Getters și Setters
@@ -62,6 +67,14 @@ public class User {
         this.fullName = fullName;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public List<Event> getTickets() {
         return tickets;
     }
@@ -74,15 +87,13 @@ public class User {
         tickets.remove(event);
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", fullName='" + fullName + '\'' +
-                '}';
+    public void displayUserInfo() {
+        System.out.println("User Details:");
+        System.out.println("User ID: " + userId);
+        System.out.println("Username: " + username);
+        System.out.println("Email: " + email);
+        System.out.println("Role: " + role);
+        AuditService.logAction("displayUserInfo");
     }
 
     public int getId() {

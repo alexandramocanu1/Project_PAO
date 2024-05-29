@@ -14,7 +14,7 @@ public class VenueRepository {
 
     public List<Venue> getAllVenues() {
         List<Venue> venues = new ArrayList<>();
-        String query = "SELECT * FROM venues";
+        String query = "SELECT * FROM Venues";
 
         try (Connection connection = DatabaseConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(query);

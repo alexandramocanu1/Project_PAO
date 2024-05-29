@@ -29,6 +29,7 @@ public class TypeEvent {
         System.out.println("Type Event Details:");
         System.out.println("Type ID: " + typeId);
         System.out.println("Type Name: " + typeName);
+        //AuditService.logAction("displayTypeEventInfo");
     }
 
 }

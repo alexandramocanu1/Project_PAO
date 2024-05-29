@@ -1,5 +1,7 @@
 package model;
 
+import service.AuditService;
+
 import java.sql.Date;
 
 public class Event {
@@ -64,6 +66,7 @@ public class Event {
         System.out.println("Type: " + type);
         System.out.println("Date: " + eventDate);
         System.out.println("Venue ID: " + venueId);
+        AuditService.logAction("displayEventInfo");
     }
 
     @Override

@@ -1,5 +1,7 @@
 package model;
 
+import service.AuditService;
+
 public class Venue {
     private String venueId;
     private String name;
@@ -40,6 +42,7 @@ public class Venue {
         System.out.println("Venue ID: " + venueId);
         System.out.println("Name: " + name);
         System.out.println("Location: " + location);
+        AuditService.logAction("displayVenueInfo");
     }
 
 }

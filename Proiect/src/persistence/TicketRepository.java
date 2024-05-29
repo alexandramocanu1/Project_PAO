@@ -14,7 +14,7 @@ public class TicketRepository {
 
     public List<Ticket> getAllTickets() {
         List<Ticket> tickets = new ArrayList<>();
-        String query = "SELECT * FROM tickets";
+        String query = "SELECT * FROM Tickets";
 
         try (Connection connection = DatabaseConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(query);

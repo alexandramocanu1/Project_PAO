@@ -1,11 +1,14 @@
+-- Crearea tabelului Users
 CREATE TABLE Users (
                        id NUMBER PRIMARY KEY,
                        username VARCHAR2(50) NOT NULL,
                        password VARCHAR2(50) NOT NULL,
                        email VARCHAR2(100) NOT NULL,
-                       full_name VARCHAR2(100) NOT NULL
+                       full_name VARCHAR2(100) NOT NULL,
+                       role VARCHAR2(20) NOT NULL
 );
 
+-- Crearea tabelului Venues
 CREATE TABLE Venues (
                         id NUMBER PRIMARY KEY,
                         name VARCHAR2(100) NOT NULL,
@@ -13,6 +16,7 @@ CREATE TABLE Venues (
                         capacity NUMBER NOT NULL
 );
 
+-- Crearea tabelului Events
 CREATE TABLE Events (
                         id NUMBER PRIMARY KEY,
                         name VARCHAR2(100) NOT NULL,
@@ -22,7 +26,7 @@ CREATE TABLE Events (
                         FOREIGN KEY (venue_id) REFERENCES Venues(id)
 );
 
-
+-- Crearea tabelului Tickets
 CREATE TABLE Tickets (
                          id NUMBER PRIMARY KEY,
                          event_id NUMBER,
@@ -33,6 +37,7 @@ CREATE TABLE Tickets (
                          FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
+-- Crearea tabelului Reviews
 CREATE TABLE Reviews (
                          id NUMBER PRIMARY KEY,
                          event_id NUMBER,
@@ -43,6 +48,7 @@ CREATE TABLE Reviews (
                          FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
+-- Crearea tabelului Reservations
 CREATE TABLE Reservations (
                               id NUMBER PRIMARY KEY,
                               user_id NUMBER,
@@ -53,6 +59,7 @@ CREATE TABLE Reservations (
                               FOREIGN KEY (event_id) REFERENCES Events(id)
 );
 
+-- Crearea tabelului Discounts
 CREATE TABLE Discounts (
                            id NUMBER PRIMARY KEY,
                            code VARCHAR2(50) NOT NULL,
@@ -60,7 +67,9 @@ CREATE TABLE Discounts (
                            valid_until DATE NOT NULL
 );
 
--- Crearea secvențelor
+
+
+-- Crearea secvențelor pentru generarea automată a ID-urilor
 CREATE SEQUENCE users_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE venues_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE events_seq START WITH 1 INCREMENT BY 1;
@@ -69,7 +78,9 @@ CREATE SEQUENCE reviews_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE reservations_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE discounts_seq START WITH 1 INCREMENT BY 1;
 
--- Crearea trigger-urilor
+
+
+-- Crearea trigger-elor pentru a seta automat ID-urile la inserare
 CREATE OR REPLACE TRIGGER users_bir
     BEFORE INSERT ON Users
     FOR EACH ROW
@@ -118,3 +129,4 @@ CREATE OR REPLACE TRIGGER discounts_bir
 BEGIN
     SELECT discounts_seq.NEXTVAL INTO :NEW.id FROM dual;
 END;
+

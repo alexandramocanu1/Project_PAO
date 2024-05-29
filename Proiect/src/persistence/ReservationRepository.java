@@ -15,7 +15,7 @@ public class ReservationRepository {
 
     public List<Reservation> getAllReservations() {
         List<Reservation> reservations = new ArrayList<>();
-        String query = "SELECT * FROM reservations";
+        String query = "SELECT * FROM Reservations";
 
         try (Connection connection = DatabaseConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(query);

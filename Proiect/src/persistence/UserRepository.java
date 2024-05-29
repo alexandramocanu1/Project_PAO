@@ -13,7 +13,7 @@ import java.util.List;
 public class UserRepository {
 
     public void addUser(User user) {
-        String query = "INSERT INTO Users (username, password, email, full_name) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO Users (username, password, email, full_name, role) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -22,6 +22,7 @@ public class UserRepository {
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getEmail());
             statement.setString(4, user.getFullName());
+            statement.setString(5, user.getRole());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,7 +45,8 @@ public class UserRepository {
                 String userPassword = resultSet.getString("password");
                 String userEmail = resultSet.getString("email");
                 String userFullName = resultSet.getString("full_name");
-                user = new User(userId, userUsername, userPassword, userEmail, userFullName);
+                String userRole = resultSet.getString("role");
+                user = new User(userId, userUsername, userEmail, userPassword, userFullName, userRole);
                 System.out.println("User found: " + user.toString());
             } else {
                 System.out.println("No user found with username: " + username + " and password: " + password);
@@ -54,7 +56,6 @@ public class UserRepository {
         }
         return user;
     }
-
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -70,7 +71,8 @@ public class UserRepository {
                 String password = resultSet.getString("password");
                 String email = resultSet.getString("email");
                 String fullName = resultSet.getString("full_name");
-                users.add(new User(userId, username, password, email, fullName));
+                String role = resultSet.getString("role");
+                users.add(new User(userId, username, email, password, fullName, role));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,7 +81,7 @@ public class UserRepository {
     }
 
     public void updateUser(User user) {
-        String query = "UPDATE Users SET username = ?, password = ?, email = ?, full_name = ? WHERE id = ?";
+        String query = "UPDATE Users SET username = ?, password = ?, email = ?, full_name = ?, role = ? WHERE id = ?";
 
         try (Connection connection = DatabaseConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -88,7 +90,8 @@ public class UserRepository {
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getEmail());
             statement.setString(4, user.getFullName());
-            statement.setInt(5, user.getId());
+            statement.setString(5, user.getRole());
+            statement.setInt(6, user.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

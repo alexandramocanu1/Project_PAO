@@ -46,16 +46,20 @@ public class ConsoleApp {
     }
 
     private static void login() {
-        System.out.print("Enter your name: ");
-        String name = scanner.nextLine();
+        System.out.print("Enter your username: ");
+        String username = scanner.nextLine();
         System.out.print("Enter your password: ");
         String password = scanner.nextLine();
 
-        User user = userRepository.findUserByNameAndPassword(name, password);
+        User user = userRepository.findUserByNameAndPassword(username, password);
         if (user != null) {
             loggedInUser = user;
             System.out.println("Login successful!");
-            showUserMenu();
+            if ("admin".equals(user.getRole())) {
+                showAdminMenu();
+            } else {
+                showUserMenu();
+            }
         } else {
             System.out.println("Username or password incorrect!");
         }
@@ -71,26 +75,24 @@ public class ConsoleApp {
         System.out.print("Enter your full name: ");
         String fullName = scanner.nextLine();
 
-        User user = new User(0, username, email, password, fullName);
+        String role = "USER"; // Set default role to USER
+        if ("Alexandra".equalsIgnoreCase(username)) {
+            role = "ADMIN"; // Only "Alexandra" can be ADMIN
+        }
+
+        User user = new User(0, username, email, password, fullName, role);
         userRepository.addUser(user);
         System.out.println("Registration successful! Please login to continue.");
     }
 
     private static void showUserMenu() {
         while (true) {
-            System.out.println("Choose an option:");
+            System.out.println("User Menu:");
             System.out.println("1. View available events");
             System.out.println("2. Buy ticket");
             System.out.println("3. Cancel ticket");
-            System.out.println("4. View users");
-            System.out.println("5. View venues");
-            System.out.println("6. View events");
-            System.out.println("7. View tickets");
-            System.out.println("8. View reviews");
-            System.out.println("9. View reservations");
-            System.out.println("10. View discounts");
-            System.out.println("11. Logout");
-            System.out.println("12. Exit");
+            System.out.println("4. Logout");
+            System.out.println("5. Exit");
             System.out.print("Enter your choice: ");
 
             int option = scanner.nextInt();
@@ -107,30 +109,59 @@ public class ConsoleApp {
                     cancelTicket();
                     break;
                 case 4:
-                    databaseService.displayUsers();
-                    break;
-                case 5:
-                    databaseService.displayVenues();
-                    break;
-                case 6:
-                    databaseService.displayEvents();
-                    break;
-                case 7:
-                    databaseService.displayTickets();
-                    break;
-                case 8:
-                    databaseService.displayReviews();
-                    break;
-                case 9:
-                    databaseService.displayReservations();
-                    break;
-                case 10:
-                    databaseService.displayDiscounts();
-                    break;
-                case 11:
                     loggedInUser = null;
                     return;
-                case 12:
+                case 5:
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+        }
+    }
+
+    private static void showAdminMenu() {
+        while (true) {
+            System.out.println("Admin Menu:");
+            System.out.println("1. View available events");
+            System.out.println("2. Add event");
+            System.out.println("3. Manage users");
+            System.out.println("4. Manage venues");
+            System.out.println("5. Manage tickets");
+            System.out.println("6. Manage reservations");
+            System.out.println("7. Manage discounts");
+            System.out.println("8. Logout");
+            System.out.println("9. Exit");
+            System.out.print("Enter your choice: ");
+
+            int option = scanner.nextInt();
+            scanner.nextLine(); // Consuma newline
+
+            switch (option) {
+                case 1:
+                    viewAvailableEvents();
+                    break;
+                case 2:
+                    addEvent();
+                    break;
+                case 3:
+                    manageUsers();
+                    break;
+                case 4:
+                    manageVenues();
+                    break;
+                case 5:
+                    manageTickets();
+                    break;
+                case 6:
+                    manageReservations();
+                    break;
+                case 7:
+                    manageDiscounts();
+                    break;
+                case 8:
+                    loggedInUser = null;
+                    return;
+                case 9:
                     System.exit(0);
                 default:
                     System.out.println("Invalid choice! Please try again.");
@@ -148,6 +179,40 @@ public class ConsoleApp {
                 event.displayEventInfo();
             }
         }
+    }
+
+    private static void addEvent() {
+        // Logica pentru adăugarea unui eveniment
+        System.out.println("Add event functionality to be implemented.");
+    }
+
+    private static void manageUsers() {
+        System.out.println("Manage users:");
+        List<User> users = userRepository.getAllUsers();
+        for (User user : users) {
+            System.out.println(user.toString());
+        }
+        // Mai multă logică pentru gestionarea utilizatorilor poate fi adăugată aici
+    }
+
+    private static void manageVenues() {
+        // Logica pentru gestionarea locațiilor
+        System.out.println("Manage venues functionality to be implemented.");
+    }
+
+    private static void manageTickets() {
+        // Logica pentru gestionarea biletelor
+        System.out.println("Manage tickets functionality to be implemented.");
+    }
+
+    private static void manageReservations() {
+        // Logica pentru gestionarea rezervărilor
+        System.out.println("Manage reservations functionality to be implemented.");
+    }
+
+    private static void manageDiscounts() {
+        // Logica pentru gestionarea reducerilor
+        System.out.println("Manage discounts functionality to be implemented.");
     }
 
     private static void buyTicket() {
