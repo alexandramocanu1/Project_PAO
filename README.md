@@ -19,6 +19,31 @@ Imaginea de mai sus ilustrează structura bazei de date utilizată în acest pro
 - **ȘTERGERE evenimente**
 - **VIZUALIZARE evenimente disponibile**
 - **CUMPĂRARE bilete**
+
+## Lista de Acțiuni/Interogari Posibile
+Autentificare
+Înregistrare utilizator
+Vizualizare evenimente disponibile
+Cumpărare bilet
+Anulare bilet
+Vizualizare utilizatori
+Vizualizare locații
+Vizualizare bilete
+Vizualizare recenzii
+Vizualizare rezervări
+Vizualizare reduceri
+Adăugare recenzie
+Vizualizare evenimente după tip
+Vizualizare evenimente disponibile după locație
+Tipuri de Obiecte
+Utilizator
+Eveniment
+Bilet
+Locație (Venue)
+Reducere (Discount)
+Rezervare
+Recenzie (Review)
+Tip Eveniment (TypeEvent)
 - **ANULARE bilete**
 - **ADĂUGARE recenzii pentru evenimente**
 - **VIZUALIZARE locații**
