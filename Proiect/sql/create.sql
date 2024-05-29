@@ -22,6 +22,7 @@ CREATE TABLE Events (
                         FOREIGN KEY (venue_id) REFERENCES Venues(id)
 );
 
+
 CREATE TABLE Tickets (
                          id NUMBER PRIMARY KEY,
                          event_id NUMBER,
@@ -42,7 +43,6 @@ CREATE TABLE Reviews (
                          FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
-
 CREATE TABLE Reservations (
                               id NUMBER PRIMARY KEY,
                               user_id NUMBER,
@@ -60,6 +60,7 @@ CREATE TABLE Discounts (
                            valid_until DATE NOT NULL
 );
 
+-- Crearea secvențelor
 CREATE SEQUENCE users_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE venues_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE events_seq START WITH 1 INCREMENT BY 1;
@@ -68,8 +69,7 @@ CREATE SEQUENCE reviews_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE reservations_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE discounts_seq START WITH 1 INCREMENT BY 1;
 
-
-
+-- Crearea trigger-urilor
 CREATE OR REPLACE TRIGGER users_bir
     BEFORE INSERT ON Users
     FOR EACH ROW

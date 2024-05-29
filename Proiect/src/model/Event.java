@@ -1,88 +1,79 @@
 package model;
 
-import service.AuditService;
+import java.sql.Date;
 
 public class Event {
-    private String eventId;
+    private int id;
     private String name;
-    private String date;
-    private String location;
-    private int availableTickets;
+    private String type;
+    private Date eventDate;
+    private int venueId;
 
-    public Event(String eventId, String name, String date, String location, int availableTickets) {
-        this.eventId = eventId;
+    public Event(int id, String name, String type, Date eventDate, int venueId) {
+        this.id = id;
         this.name = name;
-        this.date = date;
-        this.location = location;
-        this.availableTickets = availableTickets;
-        AuditService.logAction("EventCreated");
+        this.type = type;
+        this.eventDate = eventDate;
+        this.venueId = venueId;
     }
 
-    public String getType() {
-        String lowercaseName = name.toLowerCase();
-        if (lowercaseName.contains("movie")) {
-            return "Movie";
-        } else if (lowercaseName.contains("concert")) {
-            return "Concert";
-        } else if (lowercaseName.contains("sport")) {
-            return "Sport";
-        } else {
-            return "Other";
-        }
+    // Getters și Setters
+    public int getId() {
+        return id;
     }
 
-    public String getEventId() {
-        return eventId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public int getAvailableTickets() {
-        return availableTickets;
-    }
-
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
-        AuditService.logAction("setEventId");
-    }
-
     public void setName(String name) {
         this.name = name;
-        AuditService.logAction("setName");
     }
 
-    public void setDate(String date) {
-        this.date = date;
-        AuditService.logAction("setDate");
+    public String getType() {
+        return type;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-        AuditService.logAction("setLocation");
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public void setAvailableTickets(int availableTickets) {
-        this.availableTickets = availableTickets;
-        AuditService.logAction("setAvailableTickets");
+    public Date getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(Date eventDate) {
+        this.eventDate = eventDate;
+    }
+
+    public int getVenueId() {
+        return venueId;
+    }
+
+    public void setVenueId(int venueId) {
+        this.venueId = venueId;
     }
 
     public void displayEventInfo() {
-        System.out.println("Event Details:");
-        System.out.println("Event ID: " + eventId);
+        System.out.println("Event ID: " + id);
         System.out.println("Name: " + name);
-        System.out.println("Date: " + date);
-        System.out.println("Location: " + location);
-        System.out.println("Available Tickets: " + availableTickets);
-        AuditService.logAction("displayEventInfo");
+        System.out.println("Type: " + type);
+        System.out.println("Date: " + eventDate);
+        System.out.println("Venue ID: " + venueId);
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", eventDate=" + eventDate +
+                ", venueId=" + venueId +
+                '}';
     }
 }

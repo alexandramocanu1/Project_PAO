@@ -69,4 +69,9 @@ public class DatabaseService {
             System.out.println(discount);
         }
     }
+
+    // Adaugă această metodă pentru a returna lista de evenimente
+    public List<Event> getAllEvents() {
+        return eventRepository.getAllEvents();
+    }
 }

@@ -1,95 +1,91 @@
 package model;
 
-import service.AuditService;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class User {
-    private String name;
+    private int userId; // Schimbat din String în int
+    private String username;
     private String email;
-    private String userId;
+    private String password;
+    private String fullName;
+    private List<Event> tickets;
 
-    // Constructor existent
-    public User() {
-    }
-
-    // Constructor existent
-    public User(String name, String email) {
-        this.name = name;
-        this.email = email;
-        this.userId = "USER_" + System.currentTimeMillis();
-    }
-
-    // Constructor nou
-    public User(String userId, String name, String email) {
+    public User(int userId, String username, String email, String password, String fullName) {
         this.userId = userId;
-        this.name = name;
+        this.username = username;
         this.email = email;
+        this.password = password;
+        this.fullName = fullName;
+        this.tickets = new ArrayList<>();
     }
 
-    // Metode getter și setter
-    public String getName() {
-        return name;
+    // Getters și Setters
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public void displayUserInfo() {
-        System.out.println("User ID: " + userId + ", Name: " + name + ", Email: " + email);
+    public String getPassword() {
+        return password;
     }
 
-    public void viewEventsByType(List<Event> events, String eventType) {
-        System.out.println("Viewing available events for " + eventType + "...");
-        List<Event> filteredEvents = filterEventsByType(events, eventType);
-        if (filteredEvents.isEmpty()) {
-            System.out.println("No " + eventType + " events available.");
-        } else {
-            for (Event event : filteredEvents) {
-                event.displayEventInfo();
-            }
-        }
-        AuditService.logAction("viewEventsByType");
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    private List<Event> filterEventsByType(List<Event> events, String eventType) {
-        List<Event> filteredEvents = new ArrayList<>();
-        for (Event event : events) {
-            if (event.getType().equals(eventType)) {
-                filteredEvents.add(event);
-            }
-        }
-        return filteredEvents;
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public List<Event> getTickets() {
+        return tickets;
     }
 
     public void buyTicket(Event event) {
-        System.out.println("Buying ticket for event: " + event.getName());
-        if (event.getAvailableTickets() > 0) {
-            event.setAvailableTickets(event.getAvailableTickets() - 1);
-            System.out.println("Ticket purchased successfully!");
-            AuditService.logAction("buyTicket");
-        } else {
-            System.out.println("Sorry, no tickets available for this event.");
-        }
+        tickets.add(event);
     }
 
     public void cancelTicket(Event event) {
-        System.out.println("Canceling ticket for event: " + event.getName());
-        event.setAvailableTickets(event.getAvailableTickets() + 1);
-        System.out.println("Ticket canceled successfully!");
-        AuditService.logAction("cancelTicket");
+        tickets.remove(event);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", fullName='" + fullName + '\'' +
+                '}';
+    }
+
+    public int getId() {
+        return userId;
     }
 }

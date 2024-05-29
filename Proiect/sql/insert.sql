@@ -1,4 +1,4 @@
--- Insert users
+-- Inserarea utilizatorilor
 INSERT INTO Users (username, password, email, full_name) VALUES
     ('alexandra', 'parola', 'alexandramocanu181@yahoo.com', 'Alexandra Mocanu');
 INSERT INTO Users (username, password, email, full_name) VALUES
@@ -8,7 +8,7 @@ INSERT INTO Users (username, password, email, full_name) VALUES
 INSERT INTO Users (username, password, email, full_name) VALUES
     ('alice', 'password789', 'alice@example.com', 'Alice Smith');
 
--- Insert venues
+-- Inserarea locațiilor
 INSERT INTO Venues (name, location, capacity) VALUES
     ('Stadium', '123 Main St, Anytown', 50000);
 INSERT INTO Venues (name, location, capacity) VALUES
@@ -16,15 +16,16 @@ INSERT INTO Venues (name, location, capacity) VALUES
 INSERT INTO Venues (name, location, capacity) VALUES
     ('Theater', '789 Broadway, Cityville', 1500);
 
--- Insert events
-INSERT INTO Events (name, type, event_date, venue_id) VALUES
-    ('Rock Concert', 'CONCERT', TO_DATE('2024-07-10', 'YYYY-MM-DD'), 1);
-INSERT INTO Events (name, type, event_date, venue_id) VALUES
-    ('Tech Conference', 'CONFERENCE', TO_DATE('2024-08-15', 'YYYY-MM-DD'), 2);
-INSERT INTO Events (name, type, event_date, venue_id) VALUES
-    ('Broadway Show', 'THEATER', TO_DATE('2024-09-20', 'YYYY-MM-DD'), 3);
+-- Inserarea evenimentelor
+INSERT INTO Events (id, name, type, event_date, venue_id) VALUES
+    (1, 'Rock Concert', 'CONCERT', TO_DATE('2024-07-10', 'YYYY-MM-DD'), 1);
+INSERT INTO Events (id, name, type, event_date, venue_id) VALUES
+    (2, 'Tech Conference', 'CONFERENCE', TO_DATE('2024-08-15', 'YYYY-MM-DD'), 2);
+INSERT INTO Events (id, name, type, event_date, venue_id) VALUES
+    (3, 'Broadway Show', 'THEATER', TO_DATE('2024-09-20', 'YYYY-MM-DD'), 3);
 
--- Insert tickets
+
+-- Inserarea biletelor
 INSERT INTO Tickets (event_id, user_id, price, seat) VALUES
     (1, 1, 50.00, 'A1');
 INSERT INTO Tickets (event_id, user_id, price, seat) VALUES
@@ -32,16 +33,15 @@ INSERT INTO Tickets (event_id, user_id, price, seat) VALUES
 INSERT INTO Tickets (event_id, user_id, price, seat) VALUES
     (3, 3, 75.00, 'C3');
 
--- Insert reviews
-INSERT INTO Reviews (id, event_id, user_id, rating, "COMMENT") VALUES
-    (1, 1, 1, 5, 'Amazing concert!');
-INSERT INTO Reviews (id, event_id, user_id, rating, "COMMENT") VALUES
-    (2, 2, 2, 4, 'Very informative.');
-INSERT INTO Reviews (id, event_id, user_id, rating, "COMMENT") VALUES
-    (3, 3, 3, 3, 'Good performance.');
+-- Inserarea recenziilor
+INSERT INTO Reviews (event_id, user_id, rating, "COMMENT") VALUES
+    (1, 1, 5, 'Amazing concert!');
+INSERT INTO Reviews (event_id, user_id, rating, "COMMENT") VALUES
+    (2, 2, 4, 'Very informative.');
+INSERT INTO Reviews (event_id, user_id, rating, "COMMENT") VALUES
+    (3, 3, 3, 'Good performance.');
 
-
--- Insert reservations
+-- Inserarea rezervărilor
 INSERT INTO Reservations (user_id, event_id, reservation_date, status) VALUES
     (1, 1, TO_DATE('2024-06-01', 'YYYY-MM-DD'), 'CONFIRMED');
 INSERT INTO Reservations (user_id, event_id, reservation_date, status) VALUES
@@ -49,7 +49,7 @@ INSERT INTO Reservations (user_id, event_id, reservation_date, status) VALUES
 INSERT INTO Reservations (user_id, event_id, reservation_date, status) VALUES
     (3, 3, TO_DATE('2024-08-01', 'YYYY-MM-DD'), 'CANCELLED');
 
--- Insert discounts
+-- Inserarea reducerilor
 INSERT INTO Discounts (code, percentage, valid_until) VALUES
     ('SUMMER20', 20.00, TO_DATE('2024-09-01', 'YYYY-MM-DD'));
 INSERT INTO Discounts (code, percentage, valid_until) VALUES

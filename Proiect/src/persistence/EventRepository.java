@@ -4,6 +4,7 @@ import model.Event;
 import service.DatabaseConfig;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,19 +15,19 @@ public class EventRepository {
 
     public List<Event> getAllEvents() {
         List<Event> events = new ArrayList<>();
-        String query = "SELECT * FROM events";
+        String query = "SELECT * FROM Events";
 
         try (Connection connection = DatabaseConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                String eventId = resultSet.getString("event_id");
+                int eventId = resultSet.getInt("id");
                 String name = resultSet.getString("name");
-                String date = resultSet.getString("date");
-                String location = resultSet.getString("location");
-                int availableTickets = resultSet.getInt("available_tickets");
-                events.add(new Event(eventId, name, date, location, availableTickets));
+                String type = resultSet.getString("type");
+                Date eventDate = resultSet.getDate("event_date");
+                int venueId = resultSet.getInt("venue_id");
+                events.add(new Event(eventId, name, type, eventDate, venueId));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -34,21 +35,21 @@ public class EventRepository {
         return events;
     }
 
-    public Event findEventById(String eventId) {
+    public Event findEventById(int eventId) {
         Event event = null;
-        String query = "SELECT * FROM events WHERE event_id = ?";
+        String query = "SELECT * FROM Events WHERE id = ?";
 
         try (Connection connection = DatabaseConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            statement.setString(1, eventId);
+            statement.setInt(1, eventId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 String name = resultSet.getString("name");
-                String date = resultSet.getString("date");
-                String location = resultSet.getString("location");
-                int availableTickets = resultSet.getInt("available_tickets");
-                event = new Event(eventId, name, date, location, availableTickets);
+                String type = resultSet.getString("type");
+                Date eventDate = resultSet.getDate("event_date");
+                int venueId = resultSet.getInt("venue_id");
+                event = new Event(eventId, name, type, eventDate, venueId);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -57,13 +58,16 @@ public class EventRepository {
     }
 
     public void updateEvent(Event event) {
-        String query = "UPDATE events SET available_tickets = ? WHERE event_id = ?";
+        String query = "UPDATE Events SET name = ?, type = ?, event_date = ?, venue_id = ? WHERE id = ?";
 
         try (Connection connection = DatabaseConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
-            statement.setInt(1, event.getAvailableTickets());
-            statement.setString(2, event.getEventId());
+            statement.setString(1, event.getName());
+            statement.setString(2, event.getType());
+            statement.setDate(3, event.getEventDate());
+            statement.setInt(4, event.getVenueId());
+            statement.setInt(5, event.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
