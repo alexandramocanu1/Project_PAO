@@ -11,7 +11,7 @@ Vizitați [Website-ul Documentației Modelului](https://alexandramocanu1.github.
 
 Imaginea de mai sus ilustrează structura bazei de date utilizată în acest proiect.
 
-## Lista de Acțiuni Posibile
+## Lista de Acțiuni/Interogari Posibile
 - **CREARE cont utilizator**
 - **ȘTERGERE cont utilizator**
 - **ACTUALIZARE cont utilizator**
@@ -23,25 +23,9 @@ Imaginea de mai sus ilustrează structura bazei de date utilizată în acest pro
 - **ADĂUGARE recenzii pentru evenimente**
 - **VIZUALIZARE locații**
 - **VIZUALIZARE recenzii**
+- **VIZUALIZARE rezervari**
 - **VIZUALIZARE reduceri**
 - **AUDIT al acțiunilor efectuate în baza de date**
-
-
-## Lista de Acțiuni/Interogari Posibile
-- **Autentificare**
-- **Înregistrare utilizator**
-- **Vizualizare evenimente disponibile**
-- **Cumpărare bilet**
-- **Anulare bilet**
-- **Vizualizare utilizatori**
-- **Vizualizare locații**
-- **Vizualizare bilete**
-- **Vizualizare recenzii**
-- **Vizualizare rezervări**
-- **Vizualizare reduceri**
-- **Adăugare recenzie**
-- **Vizualizare evenimente după tip**
-- **Vizualizare evenimente disponibile după locație**
 
 ## Tipuri de Obiecte
 - Utilizator
