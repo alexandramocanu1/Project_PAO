@@ -6,6 +6,10 @@ Aceasta este o aplicație de e-ticketing care permite utilizatorilor să rezerve
 ## Documentația Modelului
 Vizitați [Website-ul Documentației Modelului](https://projectpao-6455c.web.app) pentru informații detaliate despre modelele utilizate în acest proiect.
 
+## Documentația Modelului
+Vizitați [Website-ul Documentației Modelului](https://projectpao-6455c.web.app/index.html) pentru informații detaliate despre modelele utilizate în acest proiect.
+
+
 ## Diagrama Bazei de Date
 ![Database Diagram](URL_imagini_diagram_baza_de_date)
 
