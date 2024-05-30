@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48d2c628-0eec-4f30-a50f-443865f828e3" name="Changes" comment="commit project">
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase.json" afterDir="false" />
-    </list>
+    <list default="true" id="48d2c628-0eec-4f30-a50f-443865f828e3" name="Changes" comment="commit project" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -103,7 +100,7 @@
       <workItem from="1716027345935" duration="4025000" />
       <workItem from="1716104213449" duration="2368000" />
       <workItem from="1716135271729" duration="382000" />
-      <workItem from="1717060134563" duration="243000" />
+      <workItem from="1717060134563" duration="433000" />
     </task>
     <task id="LOCAL-00001" summary="commit project">
       <option name="closed" value="true" />

@@ -8,6 +8,21 @@ CREATE TABLE Users (
                        role VARCHAR2(20) NOT NULL
 );
 
+-- Crearea tabelului Admins
+CREATE TABLE Admins (
+                        user_id NUMBER PRIMARY KEY,
+                        "level" VARCHAR2(50) NOT NULL,
+                        FOREIGN KEY (user_id) REFERENCES Users(id)
+);
+
+
+-- Crearea tabelului RegularUsers
+CREATE TABLE RegularUsers (
+                              user_id NUMBER PRIMARY KEY,
+                              subscription_type VARCHAR2(50),
+                              FOREIGN KEY (user_id) REFERENCES Users(id)
+);
+
 -- Crearea tabelului Venues
 CREATE TABLE Venues (
                         id NUMBER PRIMARY KEY,
@@ -24,6 +39,12 @@ CREATE TABLE Events (
                         event_date DATE NOT NULL,
                         venue_id NUMBER,
                         FOREIGN KEY (venue_id) REFERENCES Venues(id)
+);
+
+-- Crearea tabelului TypeEvent
+CREATE TABLE TypeEvent (
+                           id NUMBER PRIMARY KEY,
+                           name VARCHAR2(50) NOT NULL
 );
 
 -- Crearea tabelului Tickets
@@ -66,6 +87,8 @@ CREATE TABLE Discounts (
                            percentage NUMBER(5, 2) NOT NULL,
                            valid_until DATE NOT NULL
 );
+
+
 
 
 
@@ -130,3 +153,59 @@ BEGIN
     SELECT discounts_seq.NEXTVAL INTO :NEW.id FROM dual;
 END;
 
+
+
+-- Crearea secvențelor pentru noile tabele
+CREATE SEQUENCE admin_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE regular_user_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE type_event_seq START WITH 1 INCREMENT BY 1;
+
+-- Crearea trigger-elor pentru a seta automat ID-urile la inserare
+CREATE OR REPLACE TRIGGER admins_bir
+    BEFORE INSERT ON Admins
+    FOR EACH ROW
+BEGIN
+    SELECT admin_seq.NEXTVAL INTO :NEW.user_id FROM dual;
+END;
+
+CREATE OR REPLACE TRIGGER regular_users_bir
+    BEFORE INSERT ON RegularUsers
+    FOR EACH ROW
+BEGIN
+    SELECT regular_user_seq.NEXTVAL INTO :NEW.user_id FROM dual;
+END;
+
+-- Crearea tabelei asociative EventDiscounts
+CREATE TABLE EventDiscounts (
+                                event_id NUMBER,
+                                discount_id NUMBER,
+                                PRIMARY KEY (event_id, discount_id),
+                                FOREIGN KEY (event_id) REFERENCES Events(id),
+                                FOREIGN KEY (discount_id) REFERENCES Discounts(id)
+);
+
+-- Crearea secvențelor pentru noile tabele
+CREATE SEQUENCE type_event_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE event_discounts_seq START WITH 1 INCREMENT BY 1;
+
+-- Crearea trigger-elor pentru a seta automat ID-urile la inserare
+CREATE OR REPLACE TRIGGER admins_bir
+    BEFORE INSERT ON Admins
+    FOR EACH ROW
+BEGIN
+    SELECT users_seq.NEXTVAL INTO :NEW.user_id FROM dual;
+END;
+
+CREATE OR REPLACE TRIGGER regular_users_bir
+    BEFORE INSERT ON RegularUsers
+    FOR EACH ROW
+BEGIN
+    SELECT users_seq.NEXTVAL INTO :NEW.user_id FROM dual;
+END;
+
+CREATE OR REPLACE TRIGGER type_event_bir
+    BEFORE INSERT ON TypeEvent
+    FOR EACH ROW
+BEGIN
+    SELECT type_event_seq.NEXTVAL INTO :NEW.id FROM dual;
+END;

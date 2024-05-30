@@ -5,6 +5,15 @@ INSERT INTO Users (username, password, email, full_name, role) VALUES
 INSERT INTO Users (username, password, email, full_name, role) VALUES
     ('paula', 'paula', 'paula@info.ro', 'Paula Paula', 'user');
 
+
+INSERT INTO Admins (user_id, "level") VALUES
+    ((SELECT id FROM Users WHERE username='alexandra'), 'superadmin');
+
+INSERT INTO RegularUsers (user_id, subscription_type) VALUES
+    ((SELECT id FROM Users WHERE username='mocanu'), 'basic');
+INSERT INTO RegularUsers (user_id, subscription_type) VALUES
+((SELECT id FROM Users WHERE username='paula'), 'premium');
+
 INSERT INTO Venues (name, location, capacity) VALUES
     ('Stadium', '123 Main St, Anytown', 50000);
 INSERT INTO Venues (name, location, capacity) VALUES
@@ -48,3 +57,20 @@ INSERT INTO Discounts (code, percentage, valid_until) VALUES
     ('LASTMINUTE', 10.00, TO_DATE('2024-12-31', 'YYYY-MM-DD'));
 
 
+-- Inserarea datelor în tabelele TypeEvent
+INSERT INTO TypeEvent (name) VALUES
+    ('CONCERT');
+INSERT INTO TypeEvent (name) VALUES
+('CONFERENCE');
+INSERT INTO TypeEvent (name) VALUES
+('SPORT');
+INSERT INTO TypeEvent (name) VALUES
+('THEATER');
+
+-- Inserarea datelor în tabelele EventDiscounts
+INSERT INTO EventDiscounts (event_id, discount_id) VALUES
+    ((SELECT id FROM Events WHERE name='Rock Concert'), (SELECT id FROM Discounts WHERE code='SUMMER20'));
+INSERT INTO EventDiscounts (event_id, discount_id) VALUES
+((SELECT id FROM Events WHERE name='Tech Conference'), (SELECT id FROM Discounts WHERE code='EARLYBIRD'));
+INSERT INTO EventDiscounts (event_id, discount_id) VALUES
+((SELECT id FROM Events WHERE name='Broadway Show'), (SELECT id FROM Discounts WHERE code='LASTMINUTE'));
