@@ -6,11 +6,8 @@ Aceasta este o aplicație de e-ticketing care permite utilizatorilor să rezerve
 ## Documentația Modelului
 Vizitați [Website-ul Documentației Modelului](https://projectpao-6455c.web.app) pentru informații detaliate despre modelele utilizate în acest proiect.
 
-
 ## Diagrama Bazei de Date
 ![Database Diagram](diagrama.png)
-
-Imaginea de mai sus ilustrează structura bazei de date utilizată în acest proiect.
 
 ## Lista de Acțiuni/Interogari Posibile
 - **CREARE cont utilizator**
