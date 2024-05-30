@@ -1,19 +1,13 @@
 # E-Ticketing Java Application
 
-## Descriere rapidă
+## Descrierea aplicatiei
 Aceasta este o aplicație de e-ticketing care permite utilizatorilor să rezerve bilete pentru diverse evenimente. Utilizatorii pot crea conturi, pot vizualiza evenimente disponibile, pot cumpăra bilete, anula bilete și pot lăsa recenzii pentru evenimentele la care au participat. Aplicația include funcționalități de gestionare a locațiilor, rezervărilor, recenziilor, reducerilor și tipurilor de evenimente.
 
 ## Documentația Modelului
 Vizitați [Website-ul Documentației Modelului](https://projectpao-6455c.web.app) pentru informații detaliate despre modelele utilizate în acest proiect.
 
-## Documentația Modelului
-Vizitați [Website-ul Documentației Modelului](https://projectpao-6455c.web.app/index.html) pentru informații detaliate despre modelele utilizate în acest proiect.
-
-
 ## Diagrama Bazei de Date
-![Database Diagram](URL_imagini_diagram_baza_de_date)
-
-Imaginea de mai sus ilustrează structura bazei de date utilizată în acest proiect.
+![Database Diagram](diagrama.png)
 
 ## Lista de Acțiuni/Interogari Posibile
 - **CREARE cont utilizator**
@@ -33,6 +27,8 @@ Imaginea de mai sus ilustrează structura bazei de date utilizată în acest pro
 
 ## Tipuri de Obiecte
 - Utilizator
+- Admin
+- Regular User
 - Eveniment
 - Bilet
 - Locație (Venue)
