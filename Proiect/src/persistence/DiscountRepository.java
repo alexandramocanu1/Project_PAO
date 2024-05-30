@@ -22,13 +22,50 @@ public class DiscountRepository {
 
             while (resultSet.next()) {
                 String discountId = resultSet.getString("discount_id");
-                String eventName = resultSet.getString("event_name");
-                double discountPercentage = resultSet.getDouble("discount_percentage");
-                discounts.add(new Discount(discountId, eventName, discountPercentage));
+                double percentage = resultSet.getDouble("percentage");
+                discounts.add(new Discount(discountId, null, percentage));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return discounts;
+    }
+
+    public void addDiscount(Discount discount) {
+        String sql = "INSERT INTO Discounts (code, percentage) VALUES (?, ?)";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, discount.getDiscountId());
+            stmt.setDouble(2, discount.getDiscountPercentage());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateDiscount(Discount discount) {
+        String sql = "UPDATE Discounts SET code = ?, percentage = ? WHERE discount_id = ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, discount.getDiscountId());
+            stmt.setDouble(2, discount.getDiscountPercentage());
+            stmt.setString(3, discount.getDiscountId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean deleteDiscount(String discountId) {
+        String sql = "DELETE FROM Discounts WHERE discount_id = ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, discountId);
+            int rowsDeleted = stmt.executeUpdate();
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

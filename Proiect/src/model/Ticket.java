@@ -2,21 +2,23 @@ package model;
 
 import service.AuditService;
 
+// Ensure the correct types are used in Ticket class
 public class Ticket {
-    private String eventId;
+    private int eventId;
     private String eventName;
-    private String ticketId;
-    private String userId;
+    private int ticketId;
+    private int userId;
+    private double price;
 
-    public Ticket(String eventId, String eventName, String ticketId, String userId) {
+    public Ticket(int eventId, String eventName, int ticketId, int userId, double price) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.ticketId = ticketId;
         this.userId = userId;
-        AuditService.logAction("TicketCreated");
+        this.price = price;
     }
 
-    public String getEventId() {
+    public int getEventId() {
         return eventId;
     }
 
@@ -24,15 +26,19 @@ public class Ticket {
         return eventName;
     }
 
-    public String getTicketId() {
+    public int getTicketId() {
         return ticketId;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setEventId(String eventId) {
+    public double getPrice() {
+        return price;
+    }
+
+    public void setEventId(int eventId) {
         this.eventId = eventId;
     }
 
@@ -40,12 +46,16 @@ public class Ticket {
         this.eventName = eventName;
     }
 
-    public void setTicketId(String ticketId) {
+    public void setTicketId(int ticketId) {
         this.ticketId = ticketId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public void displayTicketInfo() {

@@ -27,7 +27,7 @@ public class EventRepository {
                 String type = resultSet.getString("type");
                 Date eventDate = resultSet.getDate("event_date");
                 int venueId = resultSet.getInt("venue_id");
-                events.add(new Event(eventId, name, type, eventDate, venueId));
+                events.add(new Event(eventId, name, type, eventDate.toLocalDate(), venueId));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,7 +49,7 @@ public class EventRepository {
                 String type = resultSet.getString("type");
                 Date eventDate = resultSet.getDate("event_date");
                 int venueId = resultSet.getInt("venue_id");
-                event = new Event(eventId, name, type, eventDate, venueId);
+                event = new Event(eventId, name, type, eventDate.toLocalDate(), venueId);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,10 +65,24 @@ public class EventRepository {
 
             statement.setString(1, event.getName());
             statement.setString(2, event.getType());
-            statement.setDate(3, event.getEventDate());
+            statement.setDate(3, Date.valueOf(event.getEventDate()));
             statement.setInt(4, event.getVenueId());
             statement.setInt(5, event.getId());
             statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addEvent(Event event) {
+        String sql = "INSERT INTO events (name, type, event_date, venue_id) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, event.getName());
+            stmt.setString(2, event.getType());
+            stmt.setDate(3, Date.valueOf(event.getEventDate()));
+            stmt.setInt(4, event.getVenueId());
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

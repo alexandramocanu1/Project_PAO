@@ -1,48 +1,54 @@
 package model;
 
-import service.AuditService;
-
 public class Venue {
-    private String venueId;
+    private int id;
     private String name;
-    private String location;
+    private String address;
+    private int capacity;
 
-    public Venue(String venueId, String name, String location) {
-        this.venueId = venueId;
+    public Venue(int id, String name, String address, int capacity) {
+        this.id = id;
         this.name = name;
-        this.location = location;
+        this.address = address;
+        this.capacity = capacity;
     }
 
-    public String getVenueId() {
-        return venueId;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getLocation() {
-        return location;
+    public String getAddress() {
+        return address;
     }
 
-    public void setVenueId(String venueId) {
-        this.venueId = venueId;
+    public int getCapacity() {
+        return capacity;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void displayVenueInfo() {
-        System.out.println("Venue Details:");
-        System.out.println("Venue ID: " + venueId);
-        System.out.println("Name: " + name);
-        System.out.println("Location: " + location);
-        AuditService.logAction("displayVenueInfo");
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    @Override
+    public String toString() {
+        return "Venue{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", capacity=" + capacity +
+                '}';
     }
 
 }
