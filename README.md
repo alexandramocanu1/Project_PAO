@@ -27,6 +27,8 @@ Vizitați [Website-ul Documentației Modelului](https://projectpao-6455c.web.app
 
 ## Tipuri de Obiecte
 - Utilizator
+- Admin
+- Regular User
 - Eveniment
 - Bilet
 - Locație (Venue)
